@@ -1,0 +1,26 @@
+{
+  "name": "workerpool",
+  "version": "1.0.0",
+  "description": "Worker Pool creation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --config \"./nodemon.json\"/ clean --parallel watch:build watch:server --print-label",
+    "watch:build": "tsc --watch",
+    "watch:server": "nodemon './dist/index.js' --watch './dist'"
+  },
+  "author": "Shailja Bagdi",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.1.6",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "csv-parser": "^2.3.3",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4",
+    "os": "^0.1.1",
+    "redis": "^3.0.2",
+    "rsmq": "^0.12.2"
+  }
+}
