@@ -16,9 +16,9 @@ class App {
         console.log(os.cpus().length)
         this.redis.createQueue()
         const pool = this.workerPool.createWorkerpool({ workers: os.cpus().length })
-        fs.createReadStream('/home/user/workerPool/data.csv')
-                        .on('error', () => {
-                            console.log('Error')
+        fs.createReadStream('./data.csv')
+                        .on('error', (err) => {
+                            console.log('Error', err)
                         })
                         .pipe(csvParser())
                         .on('data', (row) => {

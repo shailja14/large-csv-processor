@@ -1,6 +1,5 @@
 interface WorkerPool {
-    processData<data, result>(d: data )
-    // terminate(): Promise<void>
+    processData<data>(d: data )
   }
 
 export default WorkerPool

@@ -36,10 +36,7 @@ class WorkerPool implements WorkerPoolInterface {
     runNext = () => {
         if (this.backlog.length == 0 || this.idleWorker.length == 0) return
         const msg = this.backlog.shift()
-        // const task = {...msg, redis: this.redis.toString()}
-        // console.log(task)
         const worker = this.idleWorker.shift()
-        // console.log(`scheduling ${msg.id} on ${worker}`)
         this.workers.get(worker).postMessage(msg)
         this.runNext()
       }
@@ -49,8 +46,6 @@ class WorkerPool implements WorkerPoolInterface {
           return [worker.threadId, worker]
         }))
         this.idleWorker = Array.from(this.workers.keys())
-        
-        // Todo: Explain below functionality
 
         this.workers.forEach((worker, index) => {
             worker.on('message', data => {
@@ -60,7 +55,6 @@ class WorkerPool implements WorkerPoolInterface {
               }
               if (this.resolvers.size === 0){
                 console.log('All Files Processed')
-                //call terminate
               }
               this.idleWorker.push(index)
               this.runNext()
