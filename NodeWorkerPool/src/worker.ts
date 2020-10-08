@@ -2,7 +2,7 @@ import { parentPort, threadId } from "worker_threads"
 import RedisClient from './Redis'
 
 class Worker {
-  private redis
+  private redis: RedisClient
   constructor(redis){
     this.redis = redis
   }
@@ -13,7 +13,7 @@ class Worker {
       this.redis.sendMsg(JSON.stringify(data), (err, res) => {
         let result = null
         if(err) {
-          result = { id, result: 'err' }
+          result = { id, result: 'err', threadId }
         } else {
           result = { id, result: res }
         }

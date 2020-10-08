@@ -7,32 +7,18 @@ class WorkerPool implements WorkerPoolInterface {
     private resolvers: Map<number, any>
     private backlog: { id: number, data: any }[] = []
     private taskIdCounter: number
-    private terminating: boolean
     private workers: Map<number, Worker>
 
     constructor(){
         this.resolvers = new Map<number, boolean>()
         this.taskIdCounter = 0
-        this.terminating = false
     }
-    processData = (data: any) => {            
-              if (this.terminating) return new Error('Workerpool is terminating')
+    processData = (data: any) => {
               this.taskIdCounter += 1
               this.backlog.push({ id: this.taskIdCounter, data })
               this.resolvers.set(this.taskIdCounter, false)
               this.runNext()    
     }
-    // async terminate(): Promise<void> {
-    //   this.terminating = true
-    //   await new Promise(r => {
-    //     setInterval(() => this.idleWorker.length == this.workers.size ? r() : null, 10)
-    //   })
-    //   console.log('all workers empty')
-    //   await Promise.all(
-    //     Array.from(this.workers.values()).map(v => v.terminate)
-    //   )
-    // }
-
     runNext = () => {
         if (this.backlog.length == 0 || this.idleWorker.length == 0) return
         const msg = this.backlog.shift()
@@ -49,12 +35,14 @@ class WorkerPool implements WorkerPoolInterface {
 
         this.workers.forEach((worker, index) => {
             worker.on('message', data => {
-              const { id, result } = data
-              if(result !== 'err'){
+              const { id, result, threadId } = data
+              if(result === 'err'){
+                console.log(`Data Chunk with id ${id} on worker ${threadId} not processed.`)
+              } else {
                 this.resolvers.delete(id)
               }
               if (this.resolvers.size === 0){
-                console.log('All Files Processed')
+                console.log('File has been processed successfully.')
               }
               this.idleWorker.push(index)
               this.runNext()

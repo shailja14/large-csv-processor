@@ -13,7 +13,6 @@ class App {
     }
     
     run = () => {
-        console.log(os.cpus().length)
         this.redis.createQueue()
         const pool = this.workerPool.createWorkerpool({ workers: os.cpus().length })
         fs.createReadStream('./data.csv')
@@ -25,7 +24,7 @@ class App {
                             pool.processData(row)
                         })
                         .on('end', () => {
-                            console.log('END')
+                            console.log('CSV file parsed')
                         })
     }
     

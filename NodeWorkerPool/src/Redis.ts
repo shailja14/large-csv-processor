@@ -10,17 +10,19 @@ class RedisClient {
         });
     }
 
-    public async createQueue() {
-            this.rsmq.createQueue({qname: process.env.QUEUENAME || 'test'}, (err) => {
+    public createQueue() {
+            this.rsmq.createQueue({qname: process.env.QUEUENAME || 'test'}, (err, resp) => {
                 if (err) {
                      if (err.name !== "queueExists") {
                          console.error(err);
                          return;
                      } else {
-                         console.log("The queue exists.");
+                         console.log("Redis queue exists.");
                      }
                 }
-                console.log("queue created");
+                if(resp === 1){
+                    console.log("Redis queue created.");
+                }
              });
     }
 

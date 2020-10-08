@@ -12,8 +12,8 @@ class Worker {
     }
 
     public startWorker() {
+        console.log('Worker Started. Will be storing record to DB.')
         this.worker.on('message', (msg, next, id) => {
-            console.log('Msg')
             Record.create(JSON.parse(msg))
             next()
         })
