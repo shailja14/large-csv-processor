@@ -15,8 +15,9 @@ class Database {
         }, (err) => {
             if (err) {
                 console.log(`DB Error: ${err.message}`)
+            } else {
+                console.log('Connected to DB')
             }
-            console.log('Connected to DB')
         });
     }
 }
